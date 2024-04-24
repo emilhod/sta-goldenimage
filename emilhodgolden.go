@@ -4,18 +4,18 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 	"time"
-	"path/filepath"
 )
 
 func main() {
 	args := os.Args[1:]
 
 
-	// Check if the provided flag is --dotnet or --react
+	// Check if the provided flag is --dotnet, --go or --react
 	if len(args) < 1 || (args[0] != "--dotnet" && args[0] != "--react") {
-    	fmt.Println("Invalid command. Usage: emilhodgolden (--dotnet | --react) --build")
+    	fmt.Println("Invalid command. Usage: emilhodgolden (--dotnet | --react | --go) --build")
     	return
 	}
 
@@ -26,8 +26,10 @@ func main() {
 		projectType = ".NET"
 	case "--react":
 		projectType = "React"
+	case "--go":
+		projectType = "Golang"
 	default:
-		fmt.Println("Invalid command. Usage: emilhodgolden (--dotnet | --react) --build")
+		fmt.Println("Invalid command. Usage: emilhodgolden (--dotnet | --react | --go) --build")
 		return
 	}
 
