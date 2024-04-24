@@ -37,7 +37,6 @@ func main() {
 	imageName := generateImageName()
 	acrName := os.Getenv("AZURE_ACR_NAME_DEV")
 	fullImageName := acrName + "/" + imageName
-	println("The full image name is: ", fullImageName)
 
 	// Execute the Docker build command for the project
 	fmt.Printf("Building Docker image for %s project with name: %s...\n", projectType, imageName)
@@ -53,7 +52,6 @@ func main() {
 
 	// Tag the Docker image 
 	fmt.Printf("Tagging the image...\n")
-	fmt.Println("Acr name is :", acrName, "Image name is: ", imageName, "Full image name is: ", fullImageName)
 	tagCmd := exec.Command("docker", "tag", imageName, fullImageName)
 	tagOutput, err := tagCmd.CombinedOutput()
 	if err != nil {
@@ -61,13 +59,11 @@ func main() {
 		fmt.Println(string(tagOutput))
 		return
 	}
-
-	fmt.Println("Docker image pushed to Azure Container Registry successfully!")
+	fmt.Println("Docker image tagged successfully!")
 	
 	
 	// Push the Docker image to Azure Container Registry
 	fmt.Printf("Pushing Docker image to Azure Container Registry...\n")
-	fmt.Println("Acr name is :", acrName, "Image name is: ", imageName, "Full image name is: ", fullImageName)
 	pushCmd := exec.Command("docker", "push", fullImageName)
 	pushOutput, err := pushCmd.CombinedOutput()
 	if err != nil {
