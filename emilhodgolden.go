@@ -37,6 +37,7 @@ func main() {
 	imageName := generateImageName()
 	acrName := os.Getenv("AZURE_ACR_NAME_DEV")
 	fullImageName := acrName + "/" + imageName
+	println("The full image name is: ", fullImageName)
 
 	// Execute the Docker build command for the project
 	fmt.Printf("Building Docker image for %s project with name: %s...\n", projectType, imageName)
