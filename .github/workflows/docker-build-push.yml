@@ -21,5 +21,8 @@ jobs:
       - name: Log in to Azure Container Registry
         run: docker login ${{ secrets.AZURE_ACR_NAME_DEV }} -u ${{ secrets.AZURE_APPLICATION_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }}
 
-      - name: Build and push go image.
+      - name: Build go binary.
         run: go build emilhodgolden.go
+
+      - name: Run
+        run: ./emilhodgolden
