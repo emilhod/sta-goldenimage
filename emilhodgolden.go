@@ -54,7 +54,8 @@ func main() {
 	// Push the Docker image to Azure Container Registry
 	fmt.Printf("Pushing Docker image to Azure Container Registry...\n")
 
-	pushCmd := exec.Command("docker", "push", imageName)
+	acrName := os.Getenv("AZURE_ACR_NAME_DEV")
+	pushCmd := exec.Command("docker", "push", acrName, imageName)
 	pushOutput, err := pushCmd.CombinedOutput()
 	if err != nil {
 		fmt.Printf("Error pushing Docker image to Azure Container Registry: %s\n", err)

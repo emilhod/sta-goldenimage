@@ -7,7 +7,16 @@ RUN apt-get update && \
     apt-get install -y yq && \
     rm -rf /var/lib/apt/lists/*
 
-# Install kubeconform
+# Install Trivy
+RUN apt-get update && \
+    apt-get install -y wget && \
+    wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | apt-key add - && \
+    echo "deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | tee -a /etc/apt/sources.list.d/trivy.list && \
+    apt-get update && \
+    apt-get install -y trivy && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install kubeconform & kubelinter
 RUN go install github.com/yannh/kubeconform/cmd/kubeconform@latest
 RUN go install golang.stackrox.io/kube-linter/cmd/kube-linter@latest
 
