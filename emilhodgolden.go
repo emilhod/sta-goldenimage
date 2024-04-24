@@ -51,11 +51,22 @@ func main() {
 		return
 	}
 
+	// Tag the Docker image 
+	fmt.Printf("Tagging the image...\n")
+	fmt.Println("Acr name is :", acrName, "Image name is: ", imageName, "Full image name is: ", fullImageName)
+	tagCmd := exec.Command("docker", "tag", imageName, fullImageName)
+	tagOutput, err := tagCmd.CombinedOutput()
+	if err != nil {
+		fmt.Printf("Error tagging image: %s\n", err)
+		fmt.Println(string(tagOutput))
+		return
+	}
 
+	fmt.Println("Docker image pushed to Azure Container Registry successfully!")
+	
+	
 	// Push the Docker image to Azure Container Registry
 	fmt.Printf("Pushing Docker image to Azure Container Registry...\n")
-
-	
 	fmt.Println("Acr name is :", acrName, "Image name is: ", imageName, "Full image name is: ", fullImageName)
 	pushCmd := exec.Command("docker", "push", fullImageName)
 	pushOutput, err := pushCmd.CombinedOutput()
