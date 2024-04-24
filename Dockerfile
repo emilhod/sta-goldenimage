@@ -7,6 +7,10 @@ RUN apt-get update && \
     apt-get install -y yq && \
     rm -rf /var/lib/apt/lists/*
 
+# Install kubeconform
+RUN go install github.com/yannh/kubeconform/cmd/kubeconform@latest
+RUN go install golang.stackrox.io/kube-linter/cmd/kube-linter@latest
+
 # Set the working directory inside the container
 WORKDIR /app
 
