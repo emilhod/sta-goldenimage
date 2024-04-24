@@ -49,6 +49,8 @@ func main() {
 		fmt.Println(string(output))
 		return
 	}
+	fmt.Println("Docker image built successfully!")
+
 
 	// Tag the Docker image 
 	fmt.Printf("Tagging the image...\n")
@@ -71,7 +73,6 @@ func main() {
 		fmt.Println(string(pushOutput))
 		return
 	}
-
 	fmt.Println("Docker image pushed to Azure Container Registry successfully!")
 	
 }
@@ -90,7 +91,7 @@ func generateImageName() string {
 	repoName := filepath.Base(strings.TrimSpace(string(repoNameOutput)))
 
 	// Get current date
-	currentDate := time.Now().Format("2006-01-02")
+	currentDate := time.Now().Format("02-01-2006")
 
 	// Get latest commit hash
 	commitHashCmd := exec.Command("git", "rev-parse", "--short=7", "HEAD")

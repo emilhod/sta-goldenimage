@@ -24,7 +24,7 @@ jobs:
       - name: Build go binary.
         run: go build emilhodgolden.go
 
-      - name: Run
+      - name: Build, tag & push
         run: ./emilhodgolden --go --build
         env:
           AZURE_ACR_NAME_DEV: ${{ secrets.AZURE_ACR_NAME_DEV}}
