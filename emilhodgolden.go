@@ -52,8 +52,21 @@ func main() {
 	}
 
 	fmt.Printf("Docker image for %s project built successfully! The image name is %s\n", projectType, imageName)
-	listImages := exec.Command("docker", "images", "ls")
-	fmt.Println(listImages)
+	
+
+
+	listImages := exec.Command("docker", "images")
+
+	output1, err := listImages.Output()
+	if err != nil {
+		fmt.Printf("Error running command: %s\n", err)
+		return
+	}
+
+	fmt.Println(string(output1))
+
+
+
 
 	// Push the Docker image to Azure Container Registry
 	fmt.Printf("Pushing Docker image to Azure Container Registry...\n")
