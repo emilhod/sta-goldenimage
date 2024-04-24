@@ -14,7 +14,7 @@ func main() {
 
 
 	// Check if the provided flag is --dotnet, --go or --react
-	if len(args) < 1 || (args[0] != "--dotnet" && args[0] != "--react") {
+	if len(args) < 1 || (args[0] != "--dotnet" && args[0] != "--react" && args[0] != "--go") {
     	fmt.Println("Invalid command. Usage: emilhodgolden (--dotnet | --react | --go) --build")
     	return
 	}
