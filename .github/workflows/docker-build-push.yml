@@ -27,4 +27,4 @@ jobs:
       - name: Run
         run: ./emilhodgolden --go --build
         env:
-          AZURE_ACR_NAME_DEV: ${{ AZURE_ACR_NAME_DEV}}
+          AZURE_ACR_NAME_DEV: ${{ secrets.AZURE_ACR_NAME_DEV}}
