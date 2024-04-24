@@ -25,4 +25,4 @@ jobs:
         run: go build emilhodgolden.go
 
       - name: Run
-        run: ./emilhodgolden
+        run: ./emilhodgolden --go --build
