@@ -66,9 +66,9 @@ func main() {
 	// For Golang projects, tag with "latest" in addition to the unique tag
 	if projectType == "Golang" {
 		repoName := getRepositoryName()
-    	fullImageName := acrName + "/" + repoName + ":latest"
+    	fullLatestImageName := acrName + "/" + repoName + ":latest"
 
-		latestTagCmd := exec.Command("docker", "tag", imageName, fullImageName)
+		latestTagCmd := exec.Command("docker", "tag", imageName, fullLatestImageName)
 		latestTagOutput, err := latestTagCmd.CombinedOutput()
 		if err != nil {
 			fmt.Printf("Error tagging image with 'latest': %s\n", err)
@@ -76,6 +76,15 @@ func main() {
 			return
 		}
 		fmt.Println("Docker image tagged with 'latest' successfully!")
+		// Push the image with the latest tag
+		pushCmdLatest := exec.Command("docker", "push", fullLatestImageName)
+		pushOutputLatest, err := pushCmdLatest.CombinedOutput()
+		if err != nil {
+			fmt.Printf("Error pushing Docker image with 'latest' tag to Azure Container Registry: %s\n", err)
+			fmt.Println(string(pushOutputLatest))
+			return
+		}
+		fmt.Println("Docker image with 'latest' tag pushed to Azure Container Registry successfully!")
 	}
 	
 	
