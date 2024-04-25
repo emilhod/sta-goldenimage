@@ -41,64 +41,41 @@ func main() {
 	// Execute the Docker build command for the project
 	fmt.Printf("Building Docker image for %s project with name: %s...\n", projectType, imageName)
 
-	cmd := exec.Command("docker", "build", "-t", imageName, ".")
-	cmd.Dir = "./" // Set the working directory to the root of the repository
-	output, err := cmd.CombinedOutput()
-	if err != nil {
-		fmt.Printf("Error building Docker image for %s project: %s\n", projectType, err)
-		fmt.Println(string(output))
+	build := buildDockerImage(projectType, imageName)
+	if build != nil {
+		fmt.Println(build) //print error
 		return
 	}
-	fmt.Println("Docker image built successfully!")
 
-
-	// Tag the Docker image 
-	fmt.Printf("Tagging the image...\n")
-	tagCmd := exec.Command("docker", "tag", imageName, fullImageName)
-	tagOutput, err := tagCmd.CombinedOutput()
-	if err != nil {
-		fmt.Printf("Error tagging image: %s\n", err)
-		fmt.Println(string(tagOutput))
+	tag := tagDockerImage(projectType, imageName, fullImageName)
+	if tag != nil {
+		fmt.Println(tag) //print error
 		return
 	}
-	fmt.Println("Docker image tagged successfully!")
 
-	// For Golang projects, tag with "latest" in addition to the unique tag
-	if projectType == "Golang" {
+	push := pushDockerImage(fullImageName)
+	if push != nil {
+		fmt.Println(push) //print error
+		return
+	}
+	
+	if projectType == "Golang"{
 		repoName := getRepositoryName()
-    	fullLatestImageName := acrName + "/" + repoName + ":latest"
+		fullLatestImageName := acrName + "/" + repoName + ":latest"
+		tag := tagDockerImage(projectType, imageName, fullLatestImageName)
 
-		latestTagCmd := exec.Command("docker", "tag", imageName, fullLatestImageName)
-		latestTagOutput, err := latestTagCmd.CombinedOutput()
-		if err != nil {
-			fmt.Printf("Error tagging image with 'latest': %s\n", err)
-			fmt.Println(string(latestTagOutput))
+		if tag != nil {
+			fmt.Println(tag) //print error
 			return
 		}
-		fmt.Println("Docker image tagged with 'latest' successfully!")
-		// Push the image with the latest tag
-		pushCmdLatest := exec.Command("docker", "push", fullLatestImageName)
-		pushOutputLatest, err := pushCmdLatest.CombinedOutput()
-		if err != nil {
-			fmt.Printf("Error pushing Docker image with 'latest' tag to Azure Container Registry: %s\n", err)
-			fmt.Println(string(pushOutputLatest))
+
+		push := pushDockerImage(fullLatestImageName)
+
+		if push != nil {
+			fmt.Println(push) //print error
 			return
 		}
-		fmt.Println("Docker image with 'latest' tag pushed to Azure Container Registry successfully!")
 	}
-	
-	
-	// Push the Docker image to Azure Container Registry
-	fmt.Printf("Pushing Docker image to Azure Container Registry...\n")
-	pushCmd := exec.Command("docker", "push", fullImageName)
-	pushOutput, err := pushCmd.CombinedOutput()
-	if err != nil {
-		fmt.Printf("Error pushing Docker image to Azure Container Registry: %s\n", err)
-		fmt.Println(string(pushOutput))
-		return
-	}
-	fmt.Println("Docker image pushed to Azure Container Registry successfully!")
-	
 }
 
 
@@ -135,4 +112,42 @@ func getRepositoryName() string {
 	}
 	repoName := filepath.Base(strings.TrimSpace(string(repoNameOutput)))
 	return repoName
+}
+
+func buildDockerImage(projectType, imageName string) error {
+	fmt.Printf("Building Docker image for %s project with name: %s...\n", projectType, imageName)
+
+	cmd := exec.Command("docker", "build", "-t", imageName, ".")
+	cmd.Dir = "./" // Set the working directory to the root of the repository
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("error building Docker image for %s project: %s\n%s", projectType, err, string(output))
+	}
+
+	fmt.Println("Docker image built successfully!")
+	return nil
+}
+
+func tagDockerImage(projectType, imageName, fullImageName string) error {
+	fmt.Printf("Tagging the image...\n")
+	tagCmd := exec.Command("docker", "tag", imageName, fullImageName)
+	tagOutput, err := tagCmd.CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("error tagging image for %s project: %s\n%s", projectType, err, string(tagOutput))
+	}
+	fmt.Println("Docker image tagged successfully!")
+	return nil
+}
+
+func pushDockerImage(fullImageName string) error {
+		// Push the Docker image to Azure Container Registry
+	fmt.Printf("Pushing Docker image to Azure Container Registry...\n")
+	pushCmd := exec.Command("docker", "push", fullImageName)
+	pushOutput, err := pushCmd.CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("error pushing Docker image to Azure Container Registry: %s\n%s", err, string(pushOutput))
+		
+	}
+	fmt.Println("Docker image pushed to Azure Container Registry successfully!")
+	return nil
 }
