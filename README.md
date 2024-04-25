@@ -10,6 +10,10 @@ This Golden/Base Image is a tool designed to automate the process of building an
 - Supports building Docker images for .NET, React and Go projects.
 - Automatically generates dynamic image names based on the repository name, current date, and latest commit hash.
 - Provides a simple command-line interface for easy usage.
+- Includes pre-installed tools for enhanced functionality:
+    - **jq and yq**: Command-line tools for parsing and manipulating JSON and YAML data.
+    - **Trivy**: A comprehensive vulnerability scanner for containers, providing insights into security issues within container images.
+    - **kubeconform & kubelinter**: Tools for Kubernetes configuration validation and linting, ensuring compliance with best practices and standards.
 
 ## Usage
 
