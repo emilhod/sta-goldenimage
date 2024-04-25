@@ -65,9 +65,10 @@ func main() {
 
 	// For Golang projects, tag with "latest" in addition to the unique tag
 	if projectType == "Golang" {
-
 		repoName := getRepositoryName()
-		latestTagCmd := exec.Command("docker", "tag", repoName, ":latest")
+    	fullImageName := acrName + "/" + repoName + ":latest"
+
+		latestTagCmd := exec.Command("docker", "tag", imageName, fullImageName)
 		latestTagOutput, err := latestTagCmd.CombinedOutput()
 		if err != nil {
 			fmt.Printf("Error tagging image with 'latest': %s\n", err)
