@@ -39,45 +39,44 @@ func main() {
 	fullImageName := acrName + "/" + imageName
 
 	// Execute the Docker build command for the project
-	fmt.Printf("Building Docker image for %s project with name: %s...\n", projectType, imageName)
-
 	build := buildDockerImage(projectType, imageName)
 	if build != nil {
 		fmt.Println(build) //print error
 		return
 	}
 
+	//Docker tag
 	tag := tagDockerImage(projectType, imageName, fullImageName)
 	if tag != nil {
 		fmt.Println(tag) //print error
 		return
 	}
 
+	//Docker push
 	push := pushDockerImage(fullImageName)
 	if push != nil {
 		fmt.Println(push) //print error
 		return
 	}
-	
+
+	//If project is go, also tag and push latest tag
 	if projectType == "Golang"{
 		repoName := getRepositoryName()
 		fullLatestImageName := acrName + "/" + repoName + ":latest"
-		tag := tagDockerImage(projectType, imageName, fullLatestImageName)
 
+		tag := tagDockerImage(projectType, imageName, fullLatestImageName)
 		if tag != nil {
 			fmt.Println(tag) //print error
 			return
 		}
 
 		push := pushDockerImage(fullLatestImageName)
-
 		if push != nil {
 			fmt.Println(push) //print error
 			return
 		}
 	}
 }
-
 
 
 // generateImageName generates a dynamic image name based on the repository name, current date, and latest commit hash
