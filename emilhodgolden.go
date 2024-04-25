@@ -65,7 +65,9 @@ func main() {
 
 	// For Golang projects, tag with "latest" in addition to the unique tag
 	if projectType == "Golang" {
-		latestTagCmd := exec.Command("docker", "tag", imageName, fmt.Sprintf("%s:latest", fullImageName))
+
+		repoName := getRepositoryName()
+		latestTagCmd := exec.Command("docker", "tag", repoName, ":latest")
 		latestTagOutput, err := latestTagCmd.CombinedOutput()
 		if err != nil {
 			fmt.Printf("Error tagging image with 'latest': %s\n", err)
@@ -94,13 +96,7 @@ func main() {
 // generateImageName generates a dynamic image name based on the repository name, current date, and latest commit hash
 func generateImageName() string {
 	// Get repository name
-	repoNameCmd := exec.Command("git", "rev-parse", "--show-toplevel")
-	repoNameOutput, err := repoNameCmd.Output()
-	if err != nil {
-		fmt.Println("Error getting repository name:", err)
-		return ""
-	}
-	repoName := filepath.Base(strings.TrimSpace(string(repoNameOutput)))
+	repoName := getRepositoryName()
 
 	// Get current date
 	currentDate := time.Now().Format("02-01-2006")
@@ -117,4 +113,16 @@ func generateImageName() string {
 	// Construct the image name
 	imageName := fmt.Sprintf("%s:%s-%s", repoName, currentDate, commitHash)
 	return imageName
+}
+
+func getRepositoryName() string {
+	// Get repository name
+	repoNameCmd := exec.Command("git", "rev-parse", "--show-toplevel")
+	repoNameOutput, err := repoNameCmd.Output()
+	if err != nil {
+		fmt.Println("Error getting repository name:", err)
+		return ""
+	}
+	repoName := filepath.Base(strings.TrimSpace(string(repoNameOutput)))
+	return repoName
 }
