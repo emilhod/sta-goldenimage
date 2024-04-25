@@ -1,19 +1,19 @@
 # sta-goldenimage
 Image for building and pushing .Net/React to ACR
 
-# Emilhod Golden Image
+# Golden/Base Image
 
-Emilhod Golden Image is a tool designed to automate the process of building and pushing Docker images for different types of projects to Azure Container Registry. It allows you to easily create a standardized Docker image that can be used across multiple projects.
+This Golden/Base Image is a tool designed to automate the process of building and pushing Docker images for different types of projects to Azure Container Registry. It allows you to easily create a standardized Docker image that can be used across multiple projects.
 
 ## Features
 
-- Supports building Docker images for both .NET and React projects.
+- Supports building Docker images for .NET, React and Go projects.
 - Automatically generates dynamic image names based on the repository name, current date, and latest commit hash.
 - Provides a simple command-line interface for easy usage.
 
 ## Usage
 
-To use Emilhod Golden Image, follow these steps:
+To use image, follow these steps:
 
 1. **Install Docker**: Make sure Docker is installed on your system.
 2. **Clone the Repository**: Clone the Emilhod Golden Image repository to your local machine.
@@ -22,7 +22,7 @@ To use Emilhod Golden Image, follow these steps:
    ```bash
    ./emilhodgolden --dotnet --build
    ```
-   Replace `--dotnet` with `--react` if you want to build a React project instead.
+   Replace `--dotnet` with `--react`  or `--go` if you want to build another project instead.
 
 ## Requirements
 
