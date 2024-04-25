@@ -61,6 +61,7 @@ func main() {
 
 	//If project is go, also tag and push latest tag
 	if projectType == "Golang"{
+		fmt.Println("Also adding latest tag...")
 		repoName := getRepositoryName()
 		fullLatestImageName := acrName + "/" + repoName + ":latest"
 
